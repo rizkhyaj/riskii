@@ -5,10 +5,12 @@ startBtn.addEventListener("click", () => {
 
     music.play();
 
-    alert("Selamat datang, Ikrim 🌸");
+    setTimeout(() => {
 
-    // nanti diarahkan ke halaman amplop
-    // window.location.href = "envelope.html";
+        window.location.href = "game.html";
+
+    }, 500);
+
 });
 
 
