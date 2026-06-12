@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kartu Ucapan Romantis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .card {
+            width: 500px;
+            height: 600px;
+            background: linear-gradient(to bottom, #fff5f7 0%, #ffe5ec 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 182, 193, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 192, 203, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .heart {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: heartBeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+        }
+
+        h1 {
+            color: #d91e63;
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, #d91e63, #ff69b4);
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+
+        .signature {
+            margin-top: 30px;
+            color: #d91e63;
+            font-style: italic;
+            font-size: 18px;
+        }
+
+        /* Bunga Jatuh */
+        .falling-flowers {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .flower {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0.8;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(600px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .flower-1 { animation-duration: 3s; }
+        .flower-2 { animation-duration: 3.5s; animation-delay: 0.5s; }
+        .flower-3 { animation-duration: 4s; animation-delay: 1s; }
+        .flower-4 { animation-duration: 3.8s; animation-delay: 1.5s; }
+        .flower-5 { animation-duration: 4.2s; animation-delay: 2s; }
+        .flower-6 { animation-duration: 3.3s; animation-delay: 2.5s; }
+        .flower-7 { animation-duration: 3.9s; animation-delay: 0.8s; }
+        .flower-8 { animation-duration: 4.1s; animation-delay: 1.3s; }
+
+        .rose { color: #ff1493; }
+        .tulip { color: #ff69b4; }
+        .cherry { color: #ff85c0; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="falling-flowers" id="flowersContainer"></div>
+        
+        <div class="card-content">
+            <div class="heart">💕</div>
+            <h1>Untuk Orang Terkasih</h1>
+            <div class="divider"></div>
+            <p>Setiap hari bersama dirimu adalah</p>
+            <p>keindahan yang tak terlukiskan.</p>
+            <p>Cintaku untukmu seperti bunga-bunga</p>
+            <p>yang terus bermekaran selamanya.</p>
+            <div class="divider"></div>
+            <p class="signature">Dengan sepenuh hati ❤️</p>
+        </div>
+    </div>
+
+    <script>
+        const flowers = ['🌹', '🌷', '🌸', '💐', '🌺', '🌻', '🌼'];
+        const container = document.getElementById('flowersContainer');
+
+        function createFlower() {
+            const flower = document.createElement('div');
+            flower.className = `flower flower-${Math.floor(Math.random() * 8) + 1}`;
+            flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+            
+            const randomLeft = Math.random() * 100;
+            flower.style.left = randomLeft + '%';
+            flower.style.top = '-30px';
+            
+            container.appendChild(flower);
+
+            // Hapus elemen setelah animasi selesai
+            setTimeout(() => flower.remove(), 4200);
+        }
+
+        // Buat bunga baru setiap 400ms
+        setInterval(createFlower, 400);
+
+        // Mulai dengan beberapa bunga
+        for (let i = 0; i < 3; i++) {
+            setTimeout(createFlower, i * 300);
+        }
+    </script>
+</body>
+</html>
