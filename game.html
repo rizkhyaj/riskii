@@ -97,11 +97,11 @@ box-shadow:
 0 10px 20px rgba(0,0,0,.08);
 }
 
-..heart{
+.heart{
 
 position:absolute;
 
-font-size:50px;
+font-size:80px;
 
 cursor:pointer;
 
@@ -110,11 +110,13 @@ user-select:none;
 z-index:9999;
 
 animation:
-pulse 1.3s infinite;
+pulse 1.5s infinite;
 
 transition:
 transform .25s ease,
-filter .25s ease;
+filter .25s ease,
+opacity .2s ease;
+
 }
 
 .heart:hover{
@@ -325,63 +327,82 @@ document.createElement("div");
 
 heart.classList.add("heart");
 
+const hearts = ["💛","💖","💕","💗"];
+
 heart.innerHTML =
-Math.random() > 0.5
-? "💛"
-: "🩷";
+hearts[Math.floor(Math.random()*hearts.length)];
 
 let x;
 let y;
 
+// hindari area tengah tempat teks
+// dan hindari posisi terlalu dekat dari hati sebelumnya
+
 do{
 
-x = Math.random()*90;
-y = Math.random()*90;
+    x = Math.floor(Math.random()*80)+10;
+    y = Math.floor(Math.random()*70)+10;
 
 }
 while(
 
-x > 30 &&
-x < 70 &&
-y > 20 &&
-y < 80
+    (
+        x > 30 &&
+        x < 70 &&
+        y > 20 &&
+        y < 80
+    )
 
 );
 
 heart.style.left = x + "vw";
 heart.style.top = y + "vh";
 
+// ukuran random sedikit biar hidup
+heart.style.fontSize =
+(Math.random()*20 + 70) + "px";
+
 heart.onclick = () => {
 
-score++;
+    score++;
 
-document
-.getElementById("score")
-.innerText = score;
+    document
+    .getElementById("score")
+    .innerText = score;
 
-document
-.getElementById("message")
-.innerText =
-messages[score-1];
+    document
+    .getElementById("message")
+    .innerText =
+    messages[score-1];
 
-heart.remove();
+    // efek kecil saat diklik
+    heart.style.transform =
+    "scale(1.8)";
 
-if(score === 10){
+    heart.style.opacity =
+    "0";
 
-document
-.getElementById("gameContainer")
-.style.display="none";
+    setTimeout(()=>{
 
-document
-.getElementById("successCard")
-.style.display="block";
+        heart.remove();
 
-}
-else{
+        if(score === 10){
 
-createHeart();
+            document
+            .getElementById("gameContainer")
+            .style.display="none";
 
-}
+            document
+            .getElementById("successCard")
+            .style.display="block";
+
+        }else{
+
+            createHeart();
+
+        }
+
+    },200);
 
 };
 
