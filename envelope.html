@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Untuk Ikrim 💌</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+
+font-family:'Poppins',sans-serif;
+
+background:
+linear-gradient(
+135deg,
+#FFE4EC,
+#FFF8D6
+);
+
+height:100vh;
+
+overflow:hidden;
+
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+
+}
+
+h2{
+
+font-family:'Playfair Display',serif;
+
+color:#5c4b51;
+
+margin-bottom:10px;
+}
+
+.subtitle{
+
+color:#6d5c63;
+
+margin-bottom:40px;
+
+text-align:center;
+}
+
+/* ===================== */
+/* ENVELOPE */
+/* ===================== */
+
+.envelope-wrapper{
+
+position:relative;
+
+width:340px;
+height:220px;
+
+cursor:pointer;
+
+}
+
+.envelope{
+
+position:absolute;
+
+width:100%;
+height:100%;
+
+}
+
+/* surat */
+
+.letter{
+
+position:absolute;
+
+left:40px;
+top:40px;
+
+width:260px;
+height:180px;
+
+background:white;
+
+border-radius:15px;
+
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+
+box-shadow:
+0 15px 35px rgba(0,0,0,.12);
+
+z-index:2;
+
+transition:
+1.2s cubic-bezier(.22,.61,.36,1);
+
+}
+
+.letter .icon{
+
+font-size:50px;
+margin-bottom:10px;
+
+}
+
+.letter .text{
+
+font-size:14px;
+color:#666;
+
+}
+
+/* badan amplop */
+
+.envelope-body{
+
+position:absolute;
+
+bottom:0;
+
+width:100%;
+height:220px;
+
+background:#f7c8d8;
+
+border-radius:12px;
+
+z-index:5;
+
+}
+
+/* lipatan kiri */
+
+.envelope-body::before{
+
+content:"";
+
+position:absolute;
+
+left:0;
+bottom:0;
+
+width:0;
+height:0;
+
+border-left:170px solid #efbfd0;
+border-top:110px solid transparent;
+border-bottom:110px solid transparent;
+
+}
+
+/* lipatan kanan */
+
+.envelope-body::after{
+
+content:"";
+
+position:absolute;
+
+right:0;
+bottom:0;
+
+width:0;
+height:0;
+
+border-right:170px solid #efbfd0;
+border-top:110px solid transparent;
+border-bottom:110px solid transparent;
+
+}
+
+/* flap */
+
+.flap{
+
+position:absolute;
+
+top:40;
+
+width:0;
+height:0;
+
+border-left:170px solid transparent;
+border-right:170px solid transparent;
+border-top:115px solid #eeb4c8;
+
+transform-origin:top center;
+
+transition:1s;
+
+z-index:8;
+
+}
+
+/* seal */
+
+.seal{
+
+position:absolute;
+
+top:90px;
+left:50%;
+
+transform:translateX(-50%);
+
+font-size:40px;
+
+z-index:10;
+
+transition:.5s;
+
+}
+
+/* OPEN STATE */
+
+.open .flap{
+
+transform:
+rotateX(180deg);
+
+}
+
+.open .seal{
+
+opacity:0;
+
+}
+
+.open .letter{
+
+transform:
+translateY(-170px);
+
+z-index:20;
+
+}
+
+/* button */
+
+.readBtn{
+
+margin-top:50px;
+
+padding:15px 35px;
+
+border:none;
+
+border-radius:50px;
+
+background:#F7C8D8;
+
+font-size:16px;
+font-weight:600;
+
+cursor:pointer;
+
+opacity:0;
+
+pointer-events:none;
+
+transition:.5s;
+
+}
+
+.readBtn.show{
+
+opacity:1;
+
+pointer-events:auto;
+
+}
+
+.readBtn:hover{
+
+background:#FFE082;
+
+transform:scale(1.05);
+
+}
+
+/* petals */
+
+.petal{
+
+position:absolute;
+
+top:-40px;
+
+font-size:20px;
+
+animation:fall linear forwards;
+
+pointer-events:none;
+
+}
+
+@keyframes fall{
+
+to{
+
+transform:
+translateY(110vh)
+rotate(360deg);
+
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<h2>there's something waiting 🌸</h2>
+
+<p class="subtitle">
+klik amplopnya dulu yaa
+</p>
+
+<div class="envelope-wrapper" id="envelopeWrapper">
+
+<div class="envelope">
+
+<div class="letter">
+
+<div class="icon">
+💌
+</div>
+
+<div class="text">
+sedikit surat..
+</div>
+
+</div>
+
+<div class="envelope-body"></div>
+
+<div class="flap"></div>
+
+<div class="seal">
+💛
+</div>
+
+</div>
+
+</div>
+
+<button
+class="readBtn"
+id="readBtn">
+
+📜 Baca Surat
+
+</button>
+
+<audio id="bgMusic" loop>
+    <source src="tulus.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+const wrapper =
+document.getElementById("envelopeWrapper");
+
+const readBtn =
+document.getElementById("readBtn");
+
+let opened = false;
+
+wrapper.addEventListener("click",()=>{
+
+if(opened) return;
+
+opened = true;
+
+wrapper.classList.add("open");
+
+setTimeout(()=>{
+
+readBtn.classList.add("show");
+
+},1200);
+
+});
+
+readBtn.addEventListener("click",()=>{
+
+sessionStorage.setItem(
+"playMusic",
+"yes"
+);
+
+window.location.href =
+"letter1.html";
+
+});
+
+/* petals */
+
+function createPetal(){
+
+const petal =
+document.createElement("div");
+
+petal.classList.add("petal");
+
+petal.innerHTML =
+Math.random() > 0.5
+? "🌸"
+: "🌸"; 
+
+petal.style.left =
+Math.random()*100 + "vw";
+
+petal.style.animationDuration =
+(Math.random()*5+5)+"s";
+
+document.body.appendChild(petal);
+
+setTimeout(()=>{
+
+petal.remove();
+
+},10000);
+
+}
+
+setInterval(createPetal,700);
+
+const music =
+document.getElementById("bgMusic");
+
+window.addEventListener("load",()=>{
+
+const savedTime =
+sessionStorage.getItem("musicTime");
+
+if(savedTime){
+
+music.currentTime =
+parseFloat(savedTime);
+
+}
+
+music.play();
+
+});
+
+</script>
+
+</body>
+</html>

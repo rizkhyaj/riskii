@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>For Ikrim 🌸</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+
+font-family:'Poppins',sans-serif;
+
+background:
+linear-gradient(
+135deg,
+#FFE4EC,
+#FFF8D6
+);
+
+height:100vh;
+
+overflow:hidden;
+
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+
+}
+
+/* CARD */
+
+.card{
+
+width:90%;
+max-width:650px;
+
+min-height:250px;
+
+background:
+rgba(255,255,255,.8);
+
+backdrop-filter:blur(10px);
+
+border-radius:30px;
+
+padding:40px;
+
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+
+font-size:1.4rem;
+
+color:#5c4b51;
+
+box-shadow:
+0 15px 40px rgba(0,0,0,.08);
+
+cursor:pointer;
+
+transition:.25s;
+
+user-select:none;
+
+}
+
+.card:hover{
+
+transform:scale(1.02);
+
+}
+
+.card:active{
+
+transform:scale(.97);
+
+}
+
+.progress{
+
+margin-top:20px;
+
+color:#6d5c63;
+
+font-size:.95rem;
+
+}
+
+.modeBtn{
+
+margin-top:30px;
+
+padding:14px 30px;
+
+border:none;
+
+border-radius:50px;
+
+background:#F7C8D8;
+
+font-weight:600;
+
+cursor:pointer;
+
+display:none;
+
+transition:.3s;
+
+}
+
+.modeBtn:hover{
+
+background:#FFE082;
+
+transform:scale(1.05);
+
+}
+
+/* petals */
+
+.petal{
+
+position:absolute;
+
+top:-40px;
+
+font-size:20px;
+
+pointer-events:none;
+
+animation:fall linear forwards;
+
+}
+
+@keyframes fall{
+
+to{
+
+transform:
+translateY(110vh)
+rotate(360deg);
+
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="card" id="card">
+
+Hi Ikrim 🌸
+
+</div>
+
+<div class="progress" id="progress">
+
+Greeting Message
+
+</div>
+
+<button class="modeBtn" id="modeBtn">
+
+👀 One More Thing
+
+</button>
+
+<audio id="bgMusic" autoplay loop>
+<source src="lagu2.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+/* ========================= */
+/* SEMHAS CARDS */
+/* ========================= */
+
+const semhasCards = [
+
+"Hi Ikrim 🌸",
+
+"First of all...",
+
+"Congratulations on your seminar result ✨",
+
+"You did it.",
+
+"After all the revisions, presentations, and overthinking.",
+
+"You finally made it.",
+
+"And honestly?",
+
+"I'm really happy for you.",
+
+"You should be proud of yourself too.",
+
+"Seriously.",
+
+"👀 One More Thing"
+
+];
+
+const revealCards = [
+
+"KLIK lagii",
+
+"Ehh sorry kepencet suka WKWKWWKWK",
+
+"Anyway...",
+
+"There are 3 reasons why I like you.",
+
+"But then I kept thinking.",
+
+"It's actually 66 🌸",
+
+"WKWKWKWK",
+
+"Good luck reading all of them.",
+
+];
+
+/* ========================= */
+/* REASONS */
+/* ========================= */
+
+const reasons = [
+
+"kepribadianmu",
+
+"pemikiran km",
+
+"cara km ngehargai org lain",
+
+"cara km memperlakukan temen temenmu",
+
+"kamu selalu berusaha baik ke orang sekitar",
+
+"Kecerdasanmu yang kadang bikin speechless",
+
+"intelegensimu",
+
+"karaktermu..",
+
+"Selera musikmu",
+
+"senyummu hehe...",
+
+"cara kamu ngobrol",
+
+"cara kamu cerita sesuatu",
+
+"cara kamu dengerin orang",
+
+"pengendalian dirimu",
+
+"etikamu",
+
+"caramu menempatkan diri",
+
+"kerendahan hatimu",
+
+"kekuatanmu",
+
+"energimu yang nular",
+
+"cara kamu ketawa",
+
+"cara kamu care ke orang sekitarmu",
+
+"kejujuranmu",
+
+"keberanianmu",
+
+"caramu menghadapi masalah",
+
+"cara kamu tetap semangat waktu lagi exhausted",
+
+"cara kamu bikin orang merasa dihargai",
+
+"semangatmu",
+
+"perspektifmu yang selalu bikin aku lihat sesuatu secara berbeda",
+
+"cara kamu jadi dirimu sendiri tanpa perlu jadi orang lain",
+
+"kedewasaanmu woyyy gacor",
+
+"kamu nggak mudah menyerah.",
+
+"jago ngedit jg woy",
+
+"karena aku melihat kebaikanmu selama sekelas",
+
+"the way km notice hal hal kecil",
+
+"cara kamu ekspresif",
+
+"ngga ngejudge",
+
+"suaramu jg asik",
+
+"plenger dikit",
+
+"latar belakangmu",
+
+"kerandomanmu kwokwowk",
+
+"caramu yang selalu mau belajar",
+
+"keimananmu sm tuhan jujur..",
+
+"caramu support jg",
+
+"kamu lucu krim",
+
+"style-mu yang simpel tapi cocok banget sama kamu",
+
+"km manis",
+
+"km punya prinsip jelas",
+
+"public speakingmu..",
+
+"critical thinking mu..",
+
+"jokes mu",
+
+"cara km kompromi",
+
+"growth mindset",
+
+"gak pernah setengah-setengah kalo dah peduli",
+
+"bukan 02 voters wkwokwo",
+
+"karena pas sama kamu, aku ga perlu jadi siapa-siapa",
+
+"tawamu yang nular",
+
+"caramu setia",
+
+"kreativitasmu",
+
+"sikap positifmu",
+
+"gayamu yang unik",
+
+"jiwa petualangmu",
+
+"km bestie selama kuliah",
+
+"ide idemu selalu menarik",
+
+"semangatmu jalanin hidup",
+
+"caramu yang bikin orang nyaman",
+
+"lastt karena kamu, ya kamu anjay be yourself n never surender..",
+
+];
+
+/* nanti lanjut sampai 60 */
+
+let mode = "semhas";
+
+let semhasIndex = 0;
+let revealIndex = 0;
+let reasonIndex = 0;
+
+const card =
+document.getElementById("card");
+
+const progress =
+document.getElementById("progress");
+
+const modeBtn =
+document.getElementById("modeBtn");
+
+/* ========================= */
+/* START */
+/* ========================= */
+
+card.innerHTML =
+semhasCards[0];
+
+card.addEventListener("click",()=>{
+
+/* SEMHAS */
+
+if(mode==="semhas"){
+
+semhasIndex++;
+
+if(
+semhasIndex >=
+semhasCards.length
+){
+
+semhasIndex = 0;
+
+}
+
+card.innerHTML =
+semhasCards[semhasIndex];
+
+progress.innerHTML =
+"Semhas Message";
+
+if(
+semhasIndex ===
+semhasCards.length-1
+){
+
+modeBtn.style.display =
+"inline-block";
+
+}
+
+}
+
+/* REVEAL */
+
+else if(mode==="reveal"){
+
+revealIndex++;
+
+if(
+revealIndex >=
+revealCards.length
+){
+
+mode = "reason";
+
+reasonIndex = 0;
+
+card.innerHTML =
+`
+
+<h2>#1</h2>
+<br>
+${reasons[0]}
+`;
+
+progress.innerHTML =
+`Reason 1 of ${reasons.length}`;
+
+return;
+
+}
+
+card.innerHTML =
+revealCards[revealIndex];
+
+}
+
+/* REASONS */
+
+else{
+
+reasonIndex++;
+
+if(
+reasonIndex >=
+reasons.length
+){
+
+reasonIndex = 0;
+
+}
+
+card.innerHTML =
+`
+
+<h2>#${reasonIndex+1}</h2>
+<br>
+${reasons[reasonIndex]}
+`;
+
+progress.innerHTML =
+`Reason ${reasonIndex+1} of ${reasons.length}`;
+
+}
+
+});
+
+/* ========================= */
+/* CHANGE MODE */
+/* ========================= */
+
+modeBtn.addEventListener("click",()=>{
+
+mode = "reveal";
+
+revealIndex = 0;
+
+card.innerHTML =
+revealCards[0];
+
+progress.innerHTML = "";
+
+modeBtn.style.display =
+"none";
+
+});
+
+/* ========================= */
+/* PETALS */
+/* ========================= */
+
+function createPetal(){
+
+const petal =
+document.createElement("div");
+
+petal.classList.add("petal");
+
+petal.innerHTML="🌸";
+
+petal.style.left =
+Math.random()*100+"vw";
+
+petal.style.animationDuration =
+(Math.random()*5+5)+"s";
+
+document.body.appendChild(petal);
+
+setTimeout(()=>{
+
+petal.remove();
+
+},10000);
+
+}
+
+setInterval(createPetal,700);
+
+/* ========================= */
+/* FORCE MUSIC */
+/* ========================= */
+
+window.addEventListener("load", () => {
+
+    const music =
+document.getElementById("bgMusic");
+
+if(
+sessionStorage.getItem("playMusic")
+){
+
+    music.play().catch(()=>{
+
+        console.log(
+        "music blocked"
+        );
+
+    });
+
+}
+
+});
+
+</script>
+
+</body>
+</html>

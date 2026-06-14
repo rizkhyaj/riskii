@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Kumpulkan Hati</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+
+font-family:'Poppins',sans-serif;
+
+background:linear-gradient(
+135deg,
+#FFE4EC,
+#FFF8D6
+);
+
+height:100vh;
+
+overflow:hidden;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+transition:1s;
+}
+
+.container{
+
+text-align:center;
+
+max-width:700px;
+
+padding:20px;
+
+z-index:2;
+
+pointer-events:none;
+}
+
+h1{
+
+font-family:'Playfair Display',serif;
+
+color:#5c4b51;
+
+margin-bottom:15px;
+}
+
+.subtitle{
+
+color:#6d5c63;
+
+margin-bottom:20px;
+
+line-height:1.8;
+}
+
+.score{
+
+font-size:1.5rem;
+
+font-weight:bold;
+
+margin-bottom:20px;
+}
+
+.message{
+
+background:rgba(255,255,255,.7);
+
+backdrop-filter:blur(8px);
+
+padding:15px 25px;
+
+border-radius:20px;
+
+display:inline-block;
+
+min-height:60px;
+
+color:#5c4b51;
+
+box-shadow:
+0 10px 20px rgba(0,0,0,.08);
+}
+
+.heart{
+
+position:absolute;
+
+font-size:80px;
+
+cursor:pointer;
+
+user-select:none;
+
+z-index:9999;
+
+animation:
+pulse 1.5s infinite;
+
+transition:
+transform .25s ease,
+filter .25s ease,
+opacity .2s ease;
+
+}
+
+.heart:hover{
+
+transform:
+scale(1.4)
+rotate(-8deg);
+
+filter:
+drop-shadow(
+0 0 15px
+rgba(255,192,203,.9)
+);
+}
+
+@keyframes pulse{
+
+0%{
+transform:scale(1);
+}
+
+50%{
+transform:scale(1.15);
+}
+
+100%{
+transform:scale(1);
+}
+}
+
+.success-card{
+
+display:none;
+
+background:white;
+
+padding:40px;
+
+border-radius:30px;
+
+max-width:500px;
+
+text-align:center;
+
+box-shadow:
+0 15px 40px rgba(0,0,0,.1);
+}
+
+.success-card h2{
+
+margin:15px 0;
+
+font-family:'Playfair Display',serif;
+
+color:#5c4b51;
+}
+
+.success-card p{
+
+color:#6d5c63;
+
+line-height:1.8;
+}
+
+.success-card button{
+
+margin-top:25px;
+
+padding:15px 35px;
+
+border:none;
+
+border-radius:50px;
+
+background:#F7C8D8;
+
+cursor:pointer;
+
+font-weight:bold;
+
+transition:.3s;
+}
+
+.success-card button:hover{
+
+background:#FFE082;
+
+transform:scale(1.05);
+}
+
+.petal{
+
+position:absolute;
+
+top:-50px;
+
+font-size:22px;
+
+animation:fall linear forwards;
+}
+
+@keyframes fall{
+
+to{
+
+transform:
+translateY(110vh)
+rotate(360deg);
+
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container" id="gameContainer">
+
+<h1>🌸 Sebelum lanjut...</h1>
+
+<p class="subtitle">
+
+Kumpulkan Hati
+
+<br><br>
+
+(gampang kok 😭)
+
+</p>
+
+<div class="score">
+
+❤️ <span id="score">0</span> / 10
+
+</div>
+
+<div class="message" id="message">
+
+Kumpulkan hati untuk membuka.
+
+</div>
+
+</div>
+
+<div class="success-card" id="successCard">
+
+<div style="font-size:45px">
+💛🌸💛🌸💛
+</div>
+
+<h2>
+Selamat semhas Ikrimmm.
+</h2>
+
+<p>
+
+sekarang...
+
+<br>
+
+waktunya buka surat 💌
+
+</p>
+
+<button id="openEnvelope">
+
+📩 Temukan Suratnya
+
+</button>
+
+</div>
+
+<audio id="bgMusic" autoplay loop>
+    <source src="tulus.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+const messages = [
+
+"Hai ikrimm.. 😊",
+
+"Selamat Semhassss ikrimmm!! 🌸",
+
+"you did it krimmm, congratsss",
+
+"Kamu kerennn, seriusss.",
+
+"How's your feeling rn??",
+
+"After all those effort n sleepless nights...😭",
+
+"finaly km made it anjayy",
+
+"so proud of u",
+
+"then you have something ✨",
+
+"Sekarang waktunya membuka surat 💌"
+
+];
+
+let score = 0;
+
+function createHeart(){
+
+if(score >= 10) return;
+
+const heart =
+document.createElement("div");
+
+heart.classList.add("heart");
+
+const hearts = ["💛","💖","💛","💗"];
+
+heart.innerHTML =
+hearts[Math.floor(Math.random()*hearts.length)];
+
+let x;
+let y;
+
+// hindari area tengah tempat teks
+// dan hindari posisi terlalu dekat dari hati sebelumnya
+
+do{
+
+    x = Math.floor(Math.random()*80)+10;
+    y = Math.floor(Math.random()*70)+10;
+
+}
+while(
+
+    (
+        x > 30 &&
+        x < 70 &&
+        y > 20 &&
+        y < 80
+    )
+
+);
+
+heart.style.left = x + "vw";
+heart.style.top = y + "vh";
+
+// ukuran random sedikit biar hidup
+heart.style.fontSize =
+(Math.random()*20 + 70) + "px";
+
+heart.onclick = () => {
+
+    score++;
+
+    document
+    .getElementById("score")
+    .innerText = score;
+
+    document
+    .getElementById("message")
+    .innerText =
+    messages[score-1];
+
+    // efek kecil saat diklik
+    heart.style.transform =
+    "scale(1.8)";
+
+    heart.style.opacity =
+    "0";
+
+    setTimeout(()=>{
+
+        heart.remove();
+
+        if(score === 10){
+
+            document
+            .getElementById("gameContainer")
+            .style.display="none";
+
+            document
+            .getElementById("successCard")
+            .style.display="block";
+
+        }else{
+
+            createHeart();
+
+        }
+
+    },200);
+
+};
+
+document.body.appendChild(heart);
+
+}
+
+createHeart();
+
+function createPetal(){
+
+const petal =
+document.createElement("div");
+
+petal.classList.add("petal");
+
+petal.innerHTML="🌸";
+
+petal.style.left =
+Math.random()*100+"vw";
+
+petal.style.animationDuration =
+(Math.random()*5+5)+"s";
+
+document.body.appendChild(petal);
+
+setTimeout(()=>{
+
+petal.remove();
+
+},10000);
+
+}
+
+setInterval(createPetal,700);
+
+document
+.getElementById("openEnvelope")
+.addEventListener("click",()=>{
+
+document.body.style.opacity="0";
+
+setTimeout(()=>{
+
+sessionStorage.setItem(
+    "playMusic",
+    "true"
+);
+
+window.location.href =
+"envelope.html";
+
+},1000);
+
+});
+
+window.addEventListener("load", () => {
+
+    const music =
+document.getElementById("bgMusic");
+
+window.addEventListener("beforeunload",()=>{
+
+sessionStorage.setItem(
+"musicTime",
+music.currentTime
+);
+
+});
+
+});
+
+</script>
+
+</body>
+</html>
